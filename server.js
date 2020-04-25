@@ -1,5 +1,6 @@
 //Require the express module
 const express = require('express')
+require("dotenv").config();
 
 //Require MongoDB
 const mongodb = require('mongodb')
@@ -7,14 +8,19 @@ const mongodb = require('mongodb')
 //Create our express server
 const app = express()
 
+//Environment variable for mongoDB database password
+const mongodbPassword = process.env.MONGOPASSWORD;
+
 //Store Database in a variable
 let db
 
 //Make the content in public folder available for the root of server
 app.use(express.static('public'))
 
+
+
 //Connection string
-const connectionString = 'mongodb+srv://todoAppUser:MONGOPASSWORD@jbcluster-v5kqr.mongodb.net/myTodoApp?retryWrites=true&w=majority'
+const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/myTodoApp?retryWrites=true&w=majority`
 
 //Connecting our app to mongoDB Atlas
 mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {

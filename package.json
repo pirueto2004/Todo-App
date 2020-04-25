@@ -14,5 +14,13 @@
   "dependencies": {
     "express": "^4.17.1",
     "mongodb": "^3.5.6"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pirueto2004/Todo-App.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pirueto2004/Todo-App/issues"
+  },
+  "homepage": "https://github.com/pirueto2004/Todo-App#readme"
 }

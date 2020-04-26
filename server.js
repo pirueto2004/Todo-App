@@ -20,6 +20,12 @@ console.log(authenticatedUser)
 //Store Database in a variable
 let db
 
+//Port for the server to listen
+let port = process.env.PORT
+if (port == null || port =="") {
+    port = 3000
+}
+
 //Make the content in public folder available for the root of server
 app.use(express.static('public'))
 
@@ -32,11 +38,10 @@ mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: tr
     db = client.db()
 
     //Once MongoDB establishes a connection, server starts listening on port PORT
-    app.listen(PORT, () => console.log("Server listening on PORT", PORT))
+    app.listen(port, () => console.log(`Server listening on PORT ${port}`))
 })
 
-//Port for the server to listen
-const PORT = 3000
+
 
 //Always add the following boilerplate code to your app for enabling the asyncronous requests to be accessible from the req.body object
 app.use(express.json())

@@ -11,6 +11,15 @@ const itemTemplate = (item) => {
             </li>`
 }
 
+//Initial page load rendering
+
+//Variable items is available on the blobal scope so we can use it any where
+const listItem = items.map( (item) => {
+    return itemTemplate(item)
+}).join('')
+
+itemList.insertAdjacentHTML("beforeend", listItem)
+
 //Create feature
 document.getElementById("create-form").addEventListener("submit", (e) => {
     e.preventDefault()

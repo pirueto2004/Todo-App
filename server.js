@@ -34,10 +34,11 @@ app.use(express.static('public'))
 // const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`
 
     //if there's a shell environment variable named MONGODB_URI (deployed), use it; otherwise, connect to localhost
-    const dbUrl = process.env.MONGODB_URI || mongoURI;
+    // const dbUrl = process.env.MONGODB_URI || mongoURI;
+    
 
 //Connecting our app to mongoDB Atlas
-mongodb.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+mongodb.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
     //Select our MongoDB database
     db = client.db()
 

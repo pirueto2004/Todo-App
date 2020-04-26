@@ -9,15 +9,16 @@ const mongodb = require('mongodb')
 const app = express()
 
 //Environment variable for mongoDB database password
-const mongodbPassword = process.env.MONGOPASSWORD;
+const mongodbPassword = process.env.MONGOPASSWORD
+const authenticatedUser = process.env.USER
+
+console.log(authenticatedUser)
 
 //Store Database in a variable
 let db
 
 //Make the content in public folder available for the root of server
 app.use(express.static('public'))
-
-
 
 //Connection string
 const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/myTodoApp?retryWrites=true&w=majority`
@@ -39,6 +40,19 @@ app.use(express.json())
 
 //Always add the following boilerplate code to your app for enabling the user request to be accessible from the req.body object
 app.use(express.urlencoded({extended: false}))
+
+const passwordProtected = (req, res, next) => {
+    res.set('WWW-Authenticate', 'Basic realm="Simple To Do App"')
+    // console.log(req.headers.authorization)
+    if (req.headers.authorization == `${authenticatedUser}`) {
+        next()
+    } else {
+        res.status(401).send("Authentication required!")
+    }
+}
+
+//Authentication required on all routes
+app.use(passwordProtected)
 
 //Process incoming GET requests
 app.get("/", (req, res) => {

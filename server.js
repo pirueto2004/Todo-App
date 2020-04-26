@@ -18,27 +18,31 @@ const authenticatedUser = process.env.USER
 console.log(authenticatedUser)
 
 //Store Database in a variable
+const DATABASE_NAME         = 'myTodoApp'
+// const mongoURI              = `mongodb://localhost:27017/${DATABASE_NAME}`
+const mongoURI              = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`
+
 let db
 
 //Port for the server to listen
-let port = process.env.PORT
-if (port == null || port =="") {
-    port = 3000
-}
+const PORT = process.env.PORT || 3000;
 
 //Make the content in public folder available for the root of server
 app.use(express.static('public'))
 
 //Connection string
-const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/myTodoApp?retryWrites=true&w=majority`
+// const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`
+
+    //if there's a shell environment variable named MONGODB_URI (deployed), use it; otherwise, connect to localhost
+    const dbUrl = process.env.MONGODB_URI || mongoURI;
 
 //Connecting our app to mongoDB Atlas
-mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+mongodb.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
     //Select our MongoDB database
     db = client.db()
 
     //Once MongoDB establishes a connection, server starts listening on port PORT
-    app.listen(port, () => console.log(`Server listening on PORT ${port}`))
+    app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`))
 })
 
 

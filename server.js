@@ -19,8 +19,6 @@ console.log(authenticatedUser)
 
 //Store Database in a variable
 const DATABASE_NAME         = 'myTodoApp'
-// const mongoURI              = `mongodb://localhost:27017/${DATABASE_NAME}`
-const mongoURI              = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`
 
 let db
 
@@ -31,14 +29,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public'))
 
 //Connection string
-// const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`
+const connectionString = `mongodb+srv://todoAppUser:${mongodbPassword}@jbcluster-v5kqr.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority`
 
-    //if there's a shell environment variable named MONGODB_URI (deployed), use it; otherwise, connect to localhost
-    // const dbUrl = process.env.MONGODB_URI || mongoURI;
+//if there's a shell environment variable named MONGODB_URI (deployed), use it; otherwise, connect to localhost
+const dbUrl = process.env.MONGODB_URI || connectionString;
     
 
 //Connecting our app to mongoDB Atlas
-mongodb.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
+mongodb.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true}, (err, client) => {
     //Select our MongoDB database
     db = client.db()
 

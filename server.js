@@ -5,6 +5,9 @@ require("dotenv").config();
 //Require MongoDB
 const mongodb = require('mongodb')
 
+//Require sanitize-html
+const sanitizeHTML = require('sanitize-html')
+
 //Create our express server
 const app = express()
 
@@ -51,7 +54,7 @@ const passwordProtected = (req, res, next) => {
     }
 }
 
-//Authentication required on all routes
+//This tells express to use our authentication function on all routes
 app.use(passwordProtected)
 
 //Process incoming GET requests
@@ -110,8 +113,10 @@ app.get("/", (req, res) => {
 
 //Process POST request for creating item asynchronously
 app.post("/create-item", (req, res) => {
+    //Sanitize or clean up text before inserting it in database
+    const safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}} )
     //Create a new document in the collection
-    db.collection('items').insertOne({text: req.body.text}, (err, info) => {
+    db.collection('items').insertOne({text: safeText}, (err, info) => {
         //Send back the JS object that represents the new mongodb document we just created
         res.json(info.ops[0])
         // res.send("Success")
@@ -125,7 +130,9 @@ app.post("/create-item", (req, res) => {
 app.post("/update-item", (req, res) => {
     // console.log(req.body.text)
     // res.send("Success")
-    db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)}, {$set: {text: req.body.text}}, () => {
+    //Sanitize or clean up text before inserting it in database
+    const safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}} )
+    db.collection('items').findOneAndUpdate({_id: new mongodb.ObjectId(req.body.id)}, {$set: {text: safeText}}, () => {
         res.send("Success")
     })
 })

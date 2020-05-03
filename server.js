@@ -15,7 +15,6 @@ const app = express()
 const mongodbPassword = process.env.MONGOPASSWORD
 const authenticatedUser = process.env.USER
 
-console.log(authenticatedUser)
 
 //Store Database in a variable
 const DATABASE_NAME         = 'myTodoApp'
@@ -63,7 +62,7 @@ const passwordProtected = (req, res, next) => {
 }
 
 //This tells express to use our authentication function on all routes
-app.use(passwordProtected)
+// app.use(passwordProtected)
 
 //Process incoming GET requests
 app.get("/", (req, res) => {
@@ -120,7 +119,7 @@ app.get("/", (req, res) => {
 // })
 
 //Process POST request for creating item asynchronously
-app.post("/create-item", (req, res) => {
+app.post("/create-item", passwordProtected, (req, res) => {
     //Sanitize or clean up text before inserting it in database
     const safeText = sanitizeHTML(req.body.text, {allowedTags: [], allowedAttributes: {}} )
     //Create a new document in the collection
@@ -135,7 +134,7 @@ app.post("/create-item", (req, res) => {
 })
 
 //Process POST request for updating item
-app.post("/update-item", (req, res) => {
+app.post("/update-item", passwordProtected, (req, res) => {
     // console.log(req.body.text)
     // res.send("Success")
     //Sanitize or clean up text before inserting it in database
@@ -146,7 +145,7 @@ app.post("/update-item", (req, res) => {
 })
 
 //Process POST request for deleting item
-app.post("/delete-item", (req, res) => {
+app.post("/delete-item", passwordProtected, (req, res) => {
     // console.log(req.body.text)
     // res.send("Success")
     db.collection('items').deleteOne({_id: new mongodb.ObjectId(req.body.id)}, () => {

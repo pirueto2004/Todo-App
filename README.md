@@ -34,7 +34,7 @@ A basic password protection was added to our app so that only our friends and fa
 
 ## Authentication is required on all routes. 
 
-You need a username and a password to use the App.
+You need a username and a password to use the App. 
 
 For protecting our app from malicious hackers we installed the node package 'sanitize-html' to clean up and sanitize our text or input before we actually accepted into our database.
 
